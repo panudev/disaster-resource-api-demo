@@ -7,6 +7,9 @@ using DotNetEnv;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
+// Force listen on port 80 (for Azure Container Apps)
+builder.WebHost.ConfigureKestrel(serverOptions => { serverOptions.ListenAnyIP(80); });
+
 //Add Redis Connection
 var redisHost = Environment.GetEnvironmentVariable("REDIS_HOST");
 var redisPort = Environment.GetEnvironmentVariable("REDIS_PORT");
