@@ -25,7 +25,7 @@ namespace DisasterResourceAllocationAPI.Controllers
         {
             var assignments = _assignmentService.AssignTrucksToAreas();
             await _redisService.AddAssignments(assignments);
-            return Ok("Assignments Truck to Areas successfully");
+            return Ok(assignments);
         }
 
         [HttpGet]
