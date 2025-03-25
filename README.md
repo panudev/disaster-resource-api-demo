@@ -1,53 +1,50 @@
-Disaster Resource Allocation API with Redis Integration (.NET Core C#)
-An API for managing disaster response by assigning resource trucks to affected areas based on urgency, time constraints, and available resources. Built with ASP.NET Core and integrated with Redis for caching.
+# Disaster Resource Allocation API with Redis Integration (.NET Core C#)
 
-🌐 Live Demo:
-https://disaster-resource-api.victoriousglacier-f5d62531.southeastasia.azurecontainerapps.io/swagger/index.html
+An API for managing disaster response by assigning resource trucks to affected areas based on urgency, time constraints, and available resources. Built with **ASP.NET Core** and integrated with **Redis** for caching.
 
-🔧 Features
-Add disaster-affected areas with urgency and resource needs
+🌐 **Live Demo:**  
+[https://disaster-resource-api.victoriousglacier-f5d62531.southeastasia.azurecontainerapps.io/swagger/index.html](https://disaster-resource-api.victoriousglacier-f5d62531.southeastasia.azurecontainerapps.io/swagger/index.html)
 
-Register resource trucks and their availability
+---
 
-Auto-assign trucks to areas based on matching logic
+## 🔧 Features
 
-Redis integration for caching assignment results
+- Add disaster-affected areas with urgency levels and resource requirements  
+- Register available resource trucks and their travel times  
+- Automatically assign trucks to areas based on defined criteria  
+- Use Redis to cache the latest assignment data  
+- Simple RESTful API with Swagger UI for testing  
 
-Simple RESTful API with Swagger UI
+---
 
-📦 API Endpoints
-➕ Add Affected Areas
-POST /api/areas
-Add new areas with:
+## 📦 API Endpoints
 
-Urgency level
+### ➕ Add Affected Areas  
+`POST /api/areas`  
+Add a new area with:  
+- Urgency level  
+- Required resources  
+- Time constraints  
 
-Required resources
+### 🚛 Add Resource Trucks  
+`POST /api/trucks`  
+Register a truck with:  
+- Available resources  
+- Travel times to specific areas  
 
-Time constraints
+### ⚙️ Process Assignments  
+`POST /api/assignments`  
+Automatically assign trucks to areas based on:  
+- Urgency  
+- Time constraints  
+- Available resources  
 
-🚛 Add Resource Trucks
-POST /api/trucks
-Add trucks with:
+### 📥 Get Latest Assignments  
+`GET /api/assignments`  
+Retrieve the most recent assignment results (from Redis cache if available).  
 
-Available resources
+### 🗑️ Clear Assignments  
+`DELETE /api/assignments`  
+Clear all current assignment data from the cache.  
 
-Travel times to different areas
-
-⚙️ Process Assignments
-POST /api/assignments
-Assign trucks to areas based on:
-
-Urgency
-
-Time constraints
-
-Resource availability
-
-📥 Get Latest Assignments
-GET /api/assignments
-Retrieve the latest processed assignments from Redis cache (if available).
-
-🗑️ Clear Assignments
-DELETE /api/assignments
-Clear all assignment data from cache.
+---
