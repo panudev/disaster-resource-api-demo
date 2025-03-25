@@ -1,0 +1,25 @@
+{
+  "trucks": [
+    {
+      "truckID": "T1",
+      "availableResource": {
+        "food": 250,
+        "water": 300
+      },
+      "travelTimeArea": {
+        "a1": 5,
+        "a2": 3
+      }
+    },
+    {
+      "truckID": "T2",
+      "availableResource": {
+        "medicine": 60
+      },
+      "travelTimeArea": {
+        "a1": 4,
+        "a2": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "areas": [
+    {
+      "areaID": "A1",
+      "urgencyLevel": 5,
+      "requiredResource": {
+        "food": 200,
+        "water": 300
+      },
+      "timeConstraint": 6
+    },
+    {
+      "areaID": "A2",
+      "urgencyLevel": 4,
+      "requiredResource": {
+        "medicine": 50
+      },
+      "timeConstraint": 4
+    }
+  ]
+}
