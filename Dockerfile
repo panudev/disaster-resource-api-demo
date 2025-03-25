@@ -9,12 +9,11 @@ WORKDIR /src
 
 # 3. Copy sln + csproj to restore
 COPY *.sln .
-COPY DisasterResourceAllocationAPI/*.csproj ./DisasterResourceAllocationAPI/
+COPY *.csproj ./
 RUN dotnet restore
 
 # 4. Copy source All and publish
 COPY . .
-WORKDIR /src/DisasterResourceAllocationAPI
 RUN dotnet publish -c Release -o /app/publish
 
 # 5. Final image run to api
@@ -22,4 +21,3 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "DisasterResourceAllocationAPI.dll"]
-
