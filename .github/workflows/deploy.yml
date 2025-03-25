@@ -1,0 +1,49 @@
+name: Deploy version tag to Azure Container App
+
+on:
+  push:
+    tags:
+      - 'v*'   # Trigger เมื่อ push tag ที่ขึ้นต้นด้วย v เช่น v1.0.0
+
+env:
+  AZURE_CONTAINER_REGISTRY: projectapi.azurecr.io
+  IMAGE_NAME: disaster-resource-api
+  CONTAINER_APP_NAME: disaster-resource-api
+  RESOURCE_GROUP: TTSS-Test
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: ACR Login
+        run: az acr login --name projectapi
+
+      - name: Get tag version
+        id: get_tag
+        run: echo "VERSION_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Build and Push Docker image
+        run: |
+          docker build -t $AZURE_CONTAINER_REGISTRY/$IMAGE_NAME:$VERSION_TAG .
+          docker push $AZURE_CONTAINER_REGISTRY/$IMAGE_NAME:$VERSION_TAG
+
+      - name: Deploy to Azure Container App
+        run: |
+          az containerapp update \
+            --name $CONTAINER_APP_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --image $AZURE_CONTAINER_REGISTRY/$IMAGE_NAME:$VERSION_TAG \
+            --set-env-vars \
+              REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+              REDIS_HOST=DisasterAPI.redis.cache.windows.net \
+              REDIS_PORT=6379 \
+              REDIS_SSL=false
