@@ -3,8 +3,6 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-# development files
-appsettings.Development.json
 
 # User-specific files
 *.rsuser
@@ -482,3 +480,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+appsettings.Development.json
