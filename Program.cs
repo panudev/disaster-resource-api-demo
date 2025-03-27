@@ -1,21 +1,24 @@
 using Microsoft.OpenApi.Models;
 using DisasterResourceAllocationAPI.Interfaces;
 using DisasterResourceAllocationAPI.Services;
+using DisasterResourceAllocationAPI.Models;
 using StackExchange.Redis;
-using DotNetEnv;
 
-Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Force listen on port 80 (for Azure Container Apps)
 builder.WebHost.ConfigureKestrel(serverOptions => { serverOptions.ListenAnyIP(80); });
 
 //Add Redis Connection
-var redisHost = Environment.GetEnvironmentVariable("REDIS_HOST");
-var redisPort = Environment.GetEnvironmentVariable("REDIS_PORT");
-var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
-var redisSsl = Environment.GetEnvironmentVariable("REDIS_SSL");
-var redisConnection = $"{redisHost}:{redisPort},password={redisPassword},ssl={redisSsl}";
+var redisConfig = new RedisConfig();
+builder.Configuration.GetSection("Redis").Bind(redisConfig);
+var redisPasswordFromEnv = Environment.GetEnvironmentVariable("Redis__Password");
+if (!string.IsNullOrEmpty(redisPasswordFromEnv))
+{
+    redisConfig.Password = redisPasswordFromEnv;
+}
+
+var redisConnection = $"{redisConfig.Host}:{redisConfig.Port},password={redisConfig.Password},ssl={redisConfig.UseSsl}";
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
 
 //Add Services to the container
