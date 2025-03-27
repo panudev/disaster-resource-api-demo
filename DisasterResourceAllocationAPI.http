@@ -1,6 +1,3 @@
 @DisasterResourceAllocationAPI_HostAddress = http://localhost:5240
 
-GET {{DisasterResourceAllocationAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ###
