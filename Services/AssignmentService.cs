@@ -35,12 +35,12 @@ namespace DisasterResourceAllocationAPI.Services
                 // _logger.LogInformation("Area: {@areas}", JsonSerializer.Serialize(area, new JsonSerializerOptions { WriteIndented = true }));
                 Truck? assignTruck = null;
                 int bestTravelTime = int.MaxValue;
-                // สร้าง list เพื่อเก็บ truck ที่ resource พอ
+                // Create List Truck Resource Match
                 List<Truck> resourceMatchedTrucks = new();
 
                 foreach(var truck in trucks)
                 {
-                    // เช็คว่าทรัพยรถพอไหม (ก่อนที่จะมีการคำนวณระยะทาง)
+                    // Check Resource 
                     bool hasResource = true;
                     foreach(var resource in area.RequiredResource)
                     {
@@ -52,11 +52,11 @@ namespace DisasterResourceAllocationAPI.Services
                     }
                     if (hasResource)
                     {
-                        resourceMatchedTrucks.Add(truck); // ทรัพยากรครบ → เพิ่มเข้า list
+                        resourceMatchedTrucks.Add(truck);
                     }
                 }
 
-                // Case 1: ไม่มี truck ไหน resource ครบเลย
+                // Truck Resource No Area
                 if (!resourceMatchedTrucks.Any())
                 {
                     assignmentsResult.Add(new Assignment
@@ -66,10 +66,10 @@ namespace DisasterResourceAllocationAPI.Services
                         ResourceDelivered = new Dictionary<string, int>(),
                         Message = "No trucks have sufficient resources for this area."
                     });
-                    continue; // ไป area ถัดไป
+                    continue; 
                 }
 
-                // เช็กว่าในกลุ่มที่ resource ครบ → ใครไปถึงทัน
+                // Check Truck To Area
                 foreach(var truck in resourceMatchedTrucks)
                 {
                     if(area.AreaID != null && truck.TravelTimeArea.TryGetValue(area.AreaID, out int travelTimeArea) && travelTimeArea <= area.TimeConstraint)
@@ -82,7 +82,7 @@ namespace DisasterResourceAllocationAPI.Services
                     }
                 }
 
-                // Case 2: ทรัพยากรครบ แต่ไม่มี truck ไหนไปทัน
+                // No Truck To Area
                 if (assignTruck == null)
                 {
                     assignmentsResult.Add(new Assignment
@@ -95,7 +95,7 @@ namespace DisasterResourceAllocationAPI.Services
                     continue;
                 }
 
-                // Assignment สำเร็จ
+                // Assignment
                 assignmentsResult.Add(new Assignment
                 {
                     AreaID = area.AreaID,
