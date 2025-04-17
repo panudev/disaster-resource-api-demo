@@ -3,11 +3,17 @@ using DisasterResourceAllocationAPI.Interfaces;
 using DisasterResourceAllocationAPI.Services;
 using DisasterResourceAllocationAPI.Models;
 using StackExchange.Redis;
+using Microsoft.EntityFrameworkCore;
+using DisasterResourceAllocationAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Force listen on port 80 (for Azure Container Apps)
 builder.WebHost.ConfigureKestrel(serverOptions => { serverOptions.ListenAnyIP(80); });
+
+//Add Database Connection
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 //Add Redis Connection
 var redisConfig = new RedisConfig();
