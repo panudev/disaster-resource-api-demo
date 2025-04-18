@@ -27,13 +27,13 @@ namespace DisasterResourceAllocationAPI.Controllers
             }
             // _logger.LogInformation("Received Areas: {@Areas}", JsonSerializer.Serialize(areas, new JsonSerializerOptions { WriteIndented = true }));
             _areaService.AddAreas(areas);
-            return Ok("Areas added successfully");
+            return Ok(new { message = "Areas added successfully" });
         }
 
         [HttpGet]
         public IActionResult GetAreas()
         {
-            return Ok(_areaService.GetAreas());
+            return Ok(new { message = "success", data = _areaService.GetAreas() });
         }
 
         [HttpDelete("{areaId}")]
@@ -44,7 +44,7 @@ namespace DisasterResourceAllocationAPI.Controllers
             {
                 return NotFound($"Area with AreaID '{areaId}' not found.");
             }
-            return Ok("Area removed successfully");
+            return Ok(new {  message = "Area removed successfully" });
         }
         
         [HttpPut("{areaId}")]
@@ -55,7 +55,7 @@ namespace DisasterResourceAllocationAPI.Controllers
             {
                 return NotFound($"Area with AreaID '{areaId}' not found.");
             }
-            return Ok("Area updated successfully");
+            return Ok(new { message = "Area updated successfully" });
         }
     }
 }

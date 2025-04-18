@@ -27,9 +27,7 @@ namespace DisasterResourceAllocationAPI.Services
             var assignmentsResult = new List<Assignment>();
 
             var areas = _areas.AsQueryable().OrderByDescending(a => a.UrgencyLevel).ToList();
-            // _logger.LogInformation("Areas UrgencyLevel: {@areas}", JsonSerializer.Serialize(areas, new JsonSerializerOptions { WriteIndented = true }));
             var trucks = _trucks.AsQueryable().ToList();
-            // _logger.LogInformation("Trucks: {@trucks}", JsonSerializer.Serialize(trucks, new JsonSerializerOptions { WriteIndented = true }));
             foreach(var area in areas)
             {
                 // _logger.LogInformation("Area: {@areas}", JsonSerializer.Serialize(area, new JsonSerializerOptions { WriteIndented = true }));
